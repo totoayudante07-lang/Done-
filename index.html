@@ -1,0 +1,123 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#69518b"><meta name="description" content="Done? Tu compañero de estudio: tareas, horario y tiempo libre."><link rel="icon" href="app-icon.png"><link rel="manifest" href="manifest.webmanifest"><title>Done? · MVP v0.6</title><style>
+:root{font-family:ui-rounded,system-ui,-apple-system,"Segoe UI",sans-serif;color:#352342;background:#ddd1e7;--ink:#352342;--plum:#654b84;--paper:#fff4f0e8;--outline:#977ba2;--soft:#f4e9f4;--shadow:0 9px 25px #37244a26}*{box-sizing:border-box}body{margin:0}button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #e7aa5c;outline-offset:2px}button{border:0;color:inherit}#app{width:min(100%,450px);height:100dvh;min-height:500px;margin:auto;position:relative;overflow:hidden;background:#b6a2c7 url('app-background.png') center/cover no-repeat;box-shadow:0 8px 60px #2411334d}#app::before{content:'';position:absolute;inset:0;background:linear-gradient(#4f38721a,#ffecdf29);pointer-events:none}main{position:relative;height:100%;overflow:auto;padding:28px 18px 112px;scrollbar-width:thin}header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 18px;min-height:42px}h1{font-size:28px;color:#fff9ff;text-shadow:0 2px 10px #422854b8;margin:0;font-weight:850}h2{font-size:18px;margin:0 0 12px}h3{font-size:16px;margin:0 0 9px}p{line-height:1.45}.topbtn{background:#fff9f0ca;border:1px solid #fffd;border-radius:999px;padding:9px 13px;font-weight:750;color:#5b4570}.card{background:var(--paper);border:1px solid #fff8;backdrop-filter:blur(12px);border-radius:23px;padding:17px;margin:0 0 14px;box-shadow:var(--shadow)}.sm{font-size:12px}.muted{color:#806e8c}.smallcaps{font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:900;color:#84648d}.row{display:flex;align-items:center;gap:10px}.between{justify-content:space-between}.column{display:flex;flex-direction:column;gap:8px}.button{padding:11px 15px;background:var(--plum);color:white;border-radius:13px;font-weight:800}.button.secondary{background:#ead8ef;color:var(--ink)}.button.ghost{background:#ffffffb8;color:#5e4776}.button.tiny{font-size:12px;padding:8px 10px}.button:disabled{opacity:.5;cursor:not-allowed}.badge{background:#e8d4eb;border-radius:99px;padding:5px 10px;font-size:11px;font-weight:750}.empty{text-align:center;padding:25px 12px}.empty img{width:120px;max-width:80%;display:block;margin:0 auto 9px}.empty p{margin:6px 0 16px}.hero{min-height:190px;position:relative;background:linear-gradient(115deg,#65487ea8,#ad8cb257),url('app-background.png') center 49%/cover;border:1px solid #fff9;border-radius:25px;box-shadow:var(--shadow);padding:22px 18px;color:white;overflow:hidden;margin-bottom:14px}.hero p{max-width:100%;font-size:14px;line-height:1.5;text-shadow:0 1px 5px #4b2555}.hero h2{font-size:24px;max-width:100%;text-shadow:0 2px 9px #3a2351}.hero .button{background:#fff0e1;color:#4b3761}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}.stats .card{padding:14px 8px;text-align:center;border-radius:17px;margin:0}.num{font-size:25px;font-weight:950;color:#674783}.task{padding:15px}.taskhead{display:flex;gap:11px;align-items:flex-start}.task-symbol{width:39px;height:39px;display:grid;place-items:center;border-radius:13px;background:#e9d6ed;font-size:21px;flex-shrink:0}.tasktitle{font-weight:900;font-size:16px;overflow-wrap:anywhere}.taskmeta{font-size:12px;color:#77667f;margin-top:4px}.grow{flex:1;min-width:0}.iconbtn{background:#e8d8ea;border-radius:11px;padding:7px 9px;color:#5f4774}.progress{background:#e6dce6;height:9px;border-radius:20px;overflow:hidden;margin-top:11px}.progress>div{height:100%;border-radius:20px;background:linear-gradient(90deg,#8b64a6,#d7a4bc)}.sublist{padding-top:10px;margin-top:10px;border-top:1px solid #d9c8da;display:grid;gap:10px}.sublist label{display:flex;align-items:center;gap:8px;font-size:13px}.sublist input{width:17px;height:17px;accent-color:#785292}.tabs{display:flex;padding:4px;border:1px solid #ffffff9e;background:#65487957;backdrop-filter:blur(8px);border-radius:99px;margin-bottom:16px;gap:3px}.tabs button{flex:1;min-width:0;background:transparent;border-radius:99px;padding:10px 3px;font-size:12px;color:#fff;font-weight:700}.tabs button.active{background:#fff0e6;color:#352343}.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-bottom:14px}.day{background:#f6eaf1be;border-radius:13px;padding:9px 0;display:grid;gap:4px;justify-items:center;font-size:11px}.day.active{background:#fbe8d7;border:2px solid #fff}.day strong{font-size:14px}.time-label{font-weight:800;font-size:13px;color:#58456c}.event{border-radius:13px;padding:10px;background:#e4d0ec;display:flex;gap:9px;align-items:center;margin:7px 0;font-size:13px}.event .grow{overflow-wrap:anywhere}.event .iconbtn{padding:5px 8px}.free{background:#ffe4c7}.calendarrows{min-height:100px}.scheduler{display:grid;gap:9px}.schedslot{border-bottom:1px solid #d7c8d8;padding-bottom:7px}.notice{background:#fff1d8e9;border-radius:15px;padding:12px;font-size:13px;margin-bottom:12px}.nav{position:absolute;bottom:0;left:0;right:0;padding:9px 12px calc(9px + env(safe-area-inset-bottom));display:flex;justify-content:space-between;align-items:center;gap:2px;background:#ffecedee;backdrop-filter:blur(17px);border-top:1px solid #fff9;z-index:5}.nav button{display:flex;flex:1;flex-direction:column;align-items:center;gap:2px;background:transparent;font-size:10px;min-width:0;color:#634d78;font-weight:700;padding:3px 0}.nav svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}.nav .active{color:#41295e}.nav .center{flex:0 0 47px;height:47px;width:47px;margin-top:0;border-radius:17px;border:3px solid #fff1ee;background:#614785;display:grid;place-items:center;box-shadow:0 5px 14px #2c183c56;transform:rotate(0);overflow:hidden;padding:5px}.nav .center img{display:block;width:100%;height:100%;object-fit:contain;border-radius:12px}.nav .center.active{outline:2px solid #d1aede}.chatbg{background:#e9ddf6 url('chat-background.png') center/cover no-repeat}.chatbg main{display:flex;flex-direction:column;padding-bottom:90px}.chatmessages{flex:1;overflow:auto;display:flex;flex-direction:column;gap:10px;padding-bottom:15px}.bubble{border-radius:20px;padding:12px 14px;background:#ffeff0ec;max-width:88%;font-size:13px;white-space:pre-wrap;line-height:1.45;box-shadow:0 3px 10px #44305717}.bubble.mine{background:#685184;color:white;align-self:flex-end}.bubble.bot{align-self:flex-start}.composer{display:flex;align-items:end;gap:7px;background:#fff4f0ef;border-radius:23px;padding:8px;margin-bottom:0}.composer textarea{background:transparent;border:0;flex:1;resize:none;min-height:43px;max-height:110px;padding:10px 5px;outline:none;font-size:13px;color:#372544}.composer button{border-radius:50%;width:41px;height:41px;background:#72518d;color:white;flex-shrink:0}.widget{width:100%;aspect-ratio:3.1/1;background-size:100% 100%;background-repeat:no-repeat;display:flex;align-items:center;justify-content:end;padding:4px 7% 4px 43%;margin-bottom:13px}.widget span{display:block;color:#513950;font-weight:800;font-size:12px;line-height:1.25;max-width:100%}.formfield{display:grid;gap:6px;font-size:12px;font-weight:800;margin:0 0 12px}.formfield input,.formfield select,.formfield textarea{border:1px solid #cbb6d2;background:#fffaf9;border-radius:12px;padding:10px 11px;color:#33243e;min-width:0;width:100%}.formfield textarea{min-height:90px;resize:vertical}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}.span2{grid-column:1/-1}.overlay{position:absolute;inset:0;background:#1a102b9e;display:none;z-index:20;align-items:center;justify-content:center;padding:15px}.overlay.open{display:flex}.dialog{background:#fff5f3;border-radius:25px;padding:20px;width:100%;max-height:90%;overflow:auto;box-shadow:0 14px 40px #2b193c66}.dialog h2{margin:0 0 14px}.dialogactions{display:flex;gap:8px;justify-content:flex-end}.toast{position:absolute;bottom:94px;left:20px;right:20px;text-align:center;background:#4c365f;color:white;z-index:30;padding:13px;border-radius:16px;box-shadow:var(--shadow);display:none;font-size:13px}.toast.show{display:block}.login{position:absolute;inset:0;z-index:15;background:#584071 url('app-background.png') center/cover no-repeat;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center}.login img{width:108px;height:108px;border-radius:25px;box-shadow:0 6px 20px #33204766}.login h1{font-size:40px;margin:17px 0 6px}.login .card{width:100%;margin-top:18px}.login[hidden]{display:none}.subtle{font-size:11px;color:#6e5a76}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:15px 0 9px}.sectionhead h2{margin:0}.space{height:10px}body:has(.chatbg) #app::before{display:none}@media(min-width:650px){body{min-height:100vh;display:grid;place-items:center;background:#ece7f2}#app{height:min(92vh,860px);width:min(420px,calc(min(92vh,860px) * 9 / 16));min-height:0;border:6px solid #3e3d42;border-radius:42px;box-shadow:0 20px 75px #25173755, inset 0 0 0 1px #00000010;overflow:visible;background-clip:padding-box}#app::after{content:'';position:absolute;top:12px;left:50%;transform:translateX(-50%);width:58px;height:11px;border-radius:999px;background:#3e3d42;z-index:40}#app::before{content:'';position:absolute;inset:0;border-radius:36px;background:linear-gradient(#4f38721a,#ffecdf29);pointer-events:none}#app .phone-home{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);width:72px;height:3px;border-radius:999px;background:#3e3d42;z-index:40;opacity:.9}#app .sidebtn{position:absolute;width:4px;background:#3e3d42;border-radius:8px;left:-9px;z-index:40}.side1{top:96px;height:28px}.side2{top:130px;height:42px}.side3{top:177px;height:42px}.sideR{left:auto!important;right:-9px;top:138px;height:54px}.login{border-radius:26px}}@media(max-height:650px){main{padding-top:12px}.hero{min-height:150px}.hero h2{font-size:21px}}
+
+/* Done? v0.6 — layout consolidation */
+#app.chatbg{background:#e9ddf6 url('chat-background.png') center/cover no-repeat}
+html,body{width:100%;height:100%;overflow:hidden}
+body{background:#e9e1f1}
+#app{isolation:isolate;overflow:hidden;width:100%;max-width:450px;min-height:0;height:100dvh;border:0;border-radius:0;box-shadow:none}
+#app::before{z-index:0;inset:0;background:linear-gradient(180deg,rgba(51,34,80,.22),rgba(251,232,233,.10) 55%,rgba(63,36,83,.12))}
+main{min-width:0;min-height:0;padding:28px 18px 114px;overscroll-behavior:contain}
+header{margin:5px 0 17px;min-width:0}
+header h1{font-size:clamp(22px,5.8vw,27px);line-height:1.2;overflow-wrap:anywhere}
+header .topbtn{white-space:nowrap;flex-shrink:0}
+h2{font-size:17px}
+.card{border-radius:21px;padding:16px;margin-bottom:13px;background:rgba(255,244,242,.95);border:1px solid rgba(255,255,255,.75);backdrop-filter:blur(10px)}
+.hero{min-height:165px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:10px;padding:19px 18px;margin-bottom:13px;background:linear-gradient(112deg,rgba(58,39,92,.77),rgba(102,72,130,.32)),url('app-background.png') center/cover}
+.hero h2{font-size:22px;line-height:1.18;margin:0;max-width:100%}
+.hero p{font-size:13px;line-height:1.45;margin:0;max-width:295px}
+.hero .button{margin:0;align-self:flex-start}
+.stats{gap:7px}
+.stats .card{padding:12px 4px;min-width:0;border-radius:16px}
+.stats .num{font-size:23px}
+.stats .sm{font-size:11px;overflow-wrap:anywhere}
+.sectionhead{gap:8px;min-width:0;margin:16px 0 10px}
+.sectionhead h2{min-width:0;font-size:17px}
+.sectionhead .badge{font-size:10px;text-align:center;max-width:57%;padding:5px 7px}
+.sectionhead .button{flex-shrink:0}
+.widget{width:100%;aspect-ratio:3.06/1;min-height:0;padding:5px 7% 5px 43%;background-size:100% 100%;border-radius:17px;overflow:hidden}
+.widget span{font-size:clamp(10px,3vw,12px);line-height:1.25;overflow-wrap:anywhere}
+.task{padding:14px}
+.tasktitle{font-size:15px;line-height:1.3}
+.taskmeta{line-height:1.45}
+.sublist label{min-width:0;align-items:flex-start;line-height:1.45}
+.sublist label span{overflow-wrap:anywhere}
+.tabs{gap:2px;margin-bottom:13px}
+.tabs button{line-height:1.2;min-height:38px}
+.days{gap:3px}
+.day{padding:8px 0;min-width:0}
+.row.between{min-width:0}
+.row.between h2{min-width:0;overflow-wrap:anywhere;margin:0}
+.nav{height:76px;bottom:0;padding:10px 9px calc(13px + env(safe-area-inset-bottom));border-radius:0;gap:2px;background:rgba(255,238,237,.97);box-shadow:0 -8px 24px rgba(56,36,72,.10)}
+.nav button:not(.center){font-size:10px;gap:4px;min-width:0;min-height:48px;justify-content:center}
+.nav svg{width:22px;height:22px;flex-shrink:0}
+.nav .center{flex:0 0 44px;width:44px;height:44px;min-width:44px;max-width:44px;margin:0 3px;padding:4px;border-width:2px;align-self:center}
+.nav .center img{width:100%;height:100%;object-fit:contain}
+.chatbg main{padding-bottom:88px}
+.chatmessages{min-height:0;flex:1;overflow:auto}
+.composer{flex-shrink:0;min-width:0;box-shadow:0 3px 14px rgba(50,27,68,.16)}
+.composer textarea{min-width:0}
+.dialog{border-radius:22px;max-height:min(86dvh,750px)}
+.dialogactions{flex-wrap:wrap}
+.formgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.login{padding:35px 25px}
+.login .card{max-width:400px}
+.empty{padding:22px 12px}
+.empty img{display:none}
+.toast{bottom:88px}
+#app .sidebtn,#app .phone-home{display:none}
+@media(min-width:650px){
+ body{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:18px;background:#f4f1f7}
+ #app{position:relative;flex:none;max-width:none;width:min(420px,calc(88dvh * 9 / 16));height:auto;aspect-ratio:9 / 16;max-height:88dvh;min-height:0;border:6px solid #34343a;border-radius:39px;box-shadow:0 18px 50px rgba(45,35,54,.22);overflow:hidden;background-clip:padding-box}
+ #app::after{content:'';position:absolute;top:13px;left:50%;transform:translateX(-50%);width:72px;height:17px;border-radius:999px;background:#303039;z-index:45;pointer-events:none}
+ #app::before{border-radius:0}
+ main{padding:47px 18px 112px}
+ .login{padding-top:50px;border-radius:0}
+ .nav{height:83px;padding:8px 12px 21px;bottom:0}
+ .chatbg main{padding-bottom:101px}
+ .toast{bottom:102px}
+ #app .phone-home{display:block;position:absolute;bottom:9px;left:50%;transform:translateX(-50%);width:78px;height:3px;background:#55465a;border-radius:99px;z-index:43;pointer-events:none}
+ #app .sidebtn{display:none}
+}
+@media(max-width:360px){main{padding-left:12px;padding-right:12px}.nav{padding-left:4px;padding-right:4px}.nav button:not(.center){font-size:9px}.sectionhead h2{font-size:16px}.hero h2{font-size:21px}}
+@media(max-height:640px) and (max-width:649px){main{padding-top:13px}.hero{min-height:138px}.hero h2{font-size:20px}}
+.mini-proposal{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid #dec9dc}.mini-proposal strong{display:block;font-size:14px;overflow-wrap:anywhere}.mini-proposal p{margin:4px 0 0}.mini-proposal button{flex-shrink:0}.dialogactions{flex-wrap:wrap}.dialogactions button{min-height:42px}.dialog{overscroll-behavior:contain}#modal{overscroll-behavior:contain}
+/* Widgets: conservar la proporción natural del sprite, sin deformación ni recortes. */
+.widget{position:relative;width:100%;aspect-ratio:3.1/1;min-height:108px;max-height:160px;padding:0;margin:8px 0 16px;display:block;overflow:hidden;border-radius:20px;background:#f7e9eb;box-shadow:0 8px 22px #39244822;isolation:isolate}
+.widget-art{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:fill;pointer-events:none}
+.widget-message{position:absolute;left:42%;right:5.5%;top:50%;transform:translateY(-50%);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;max-height:82%;font-weight:750;font-size:clamp(10px,2.9vw,13px);line-height:1.32;color:#503957;overflow-wrap:anywhere}
+.calendar-card h2{font-size:17px;margin:0;max-width:66%;text-transform:capitalize}
+.calendar-legend{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 14px;font-size:11px;color:#62516f}
+.calendar-legend span{display:flex;align-items:center;gap:5px}
+.key{display:inline-block;width:11px;height:11px;border-radius:4px}.class-key{background:#ad8cc9}.study-key{background:#f2c49e}
+.agenda-entry{display:flex;align-items:center;gap:9px;border-radius:15px;padding:12px 8px;margin-bottom:9px;min-width:0}
+.agenda-class{background:#e8d7f2;border-left:4px solid #946ab2}.agenda-study{background:#ffebdc;border-left:4px solid #e4a874}
+.agenda-time{min-width:45px;font-size:12px;font-weight:850;color:#604876;display:flex;flex-direction:column;gap:3px}
+.agenda-time small{font-size:11px;font-weight:500;color:#796985}
+.agenda-desc{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;overflow-wrap:anywhere}
+.agenda-desc strong{font-size:13px}.agenda-desc small{font-size:11px;color:#776482}
+.daydot{width:5px;height:5px;border-radius:50%;background:#83619c;display:block;margin-top:1px}
+.due-event{background:#f6dce6}
+@media(min-width:650px){.widget-message{font-size:12px}}
+</style></head><body><div id="app"><main id="main"></main><span class="sidebtn side1" aria-hidden="true"></span><span class="sidebtn side2" aria-hidden="true"></span><span class="sidebtn side3" aria-hidden="true"></span><span class="sidebtn sideR" aria-hidden="true"></span><span class="phone-home" aria-hidden="true"></span><nav class="nav" id="bottomNav" aria-label="Navegación"><button data-view="home" aria-label="Inicio"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10h-6v-7H9v7H3z"/></svg>Inicio</button><button data-view="calendar" aria-label="Calendario"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg>Horario</button><button class="center" data-view="chat" aria-label="Chat"><img src="app-icon.png" alt="Mascota de Done?"></button><button data-view="tasks" aria-label="Tareas"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8 12 3 3 5-6"/></svg>Tareas</button><button data-view="settings" aria-label="Ajustes"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M4.9 4.9 7 7m10 10 2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg>Ajustes</button></nav><div id="login" class="login" hidden><img src="app-icon.png" alt="Done?"/><h1>Done?</h1><p style="color:white;text-shadow:0 2px 9px #332047">Tu compañero para organizar la universidad 💜</p><div class="card"><h2>¡Bienvenido!</h2><label class="formfield" style="text-align:left">¿Cómo quieres que te llamemos?<input id="welcomeName" maxlength="40" placeholder="Tu nombre (opcional)"></label><button class="button" id="startBtn" style="width:100%">Empezar mi espacio</button><p class="subtle">Tus tareas y clases comienzan vacías. Se guardan solo en este navegador.</p></div></div><div id="modal" class="overlay" role="dialog" aria-modal="true"><div class="dialog" id="dialog"></div></div><div class="toast" id="toast"></div></div><script>
+/* GitHub Pages: los PNG estan junto a index.html, no en /assets. */
+(() => {
+  const route = value => value.replaceAll('assets/welcome-background.png', 'app-background.png')
+                              .replaceAll('assets/', '');
+  const fixNode = node => {
+    if (node.nodeType !== 1) return;
+    const fixOne = element => {
+      if (element.hasAttribute('src')) {
+        const source = element.getAttribute('src');
+        if (source && source.includes('assets/')) element.setAttribute('src', route(source));
+      }
+      if (element.hasAttribute('style')) {
+        const style = element.getAttribute('style');
+        if (style && style.includes('assets/')) element.setAttribute('style', route(style));
+      }
+    };
+    fixOne(node);
+    node.querySelectorAll('[src*="assets/"], [style*="assets/"]').forEach(fixOne);
+  };
+  const observer = new MutationObserver(records => {
+    records.forEach(record => {
+      if (record.type === 'childList') record.addedNodes.forEach(fixNode);
+      else if (record.type === 'attributes') fixNode(record.target);
+    });
+  });
+  observer.observe(document.documentElement, {
+    subtree: true, childList: true, attributes: true, attributeFilter: ['src','style']
+  });
+  document.querySelectorAll('[src*="assets/"], [style*="assets/"]').forEach(fixNode);
+})();
+</script><script src="app.js" defer></script></body></html>
