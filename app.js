@@ -84,8 +84,8 @@ function renderCalendar(){
   <div class="card"><h2>☀️ Bloques disponibles</h2><p class="muted sm">El horario de estudio se propone automáticamente dentro de tus espacios libres. Puedes editar clases o tareas cuando quieras.</p>${freeSlots(selectedDate).length?freeSlots(selectedDate).map(([a,b])=>`<div class="event free"><span>⏱</span><div class="grow"><b>${fmtTime(a)} – ${fmtTime(b)}</b><div class="sm">${formatMinutes(b-a)} libres (antes de aplicar sugerencias)</div></div></div>`).join(''):'<p class="muted sm">No hay bloques libres de al menos 30 minutos entre las 08:00 y las 21:00.</p>'}</div>
   ${suggestion(selectedDate)?recommendationWidget(`Prioriza ${escapeHtml(suggestion(selectedDate).task.title)} según su fecha de entrega, horas pendientes y progreso.`,'focus'):''}`;
 }
-function renderChat(){return `${header('💬 Chat Done?','<button class="topbtn" data-action="new-task">+ Tarea</button>')}<div class="chatmessages" id="chatMessages">${data.chat.map(m=>`<div class="bubble ${m.role==='me'?'mine':'bot'}">${escapeHtml(m.text)}</div>`).join('')}</div><div class="composer"><textarea id="chatInput" rows="1" placeholder="Ej: El viernes entrego Taller, necesito 8 horas..."></textarea><button data-action="send-chat" aria-label="Enviar mensaje">➤</button></div><div class="subtle" style="padding:6px">Interpretador local de entregas y prioridades · guardado automático; puedes editar después.</div>`}
-function renderSettings(){return `${header('⚙ Ajustes')}<div class="card"><h2>Mi espacio</h2><label class="formfield">Nombre<input id="settingName" value="${escapeHtml(data.name)}" maxlength="40" placeholder="Tu nombre"></label><button class="button" data-action="save-name">Guardar nombre</button><p class="muted sm">Tu calendario y tus tareas son personales de este navegador. No se envían a un servidor.</p></div><div class="card"><h2>Mis datos</h2><div class="column"><button class="button secondary" data-action="export">⬇ Exportar respaldo JSON</button><label class="button secondary" style="text-align:center;cursor:pointer">⬆ Importar respaldo<input id="importFile" type="file" accept=".json,application/json" hidden></label><button class="button ghost" data-action="reset">Restablecer todo</button></div><p class="muted sm">Para mover tus tareas a otro dispositivo, exporta un respaldo e impórtalo allí.</p></div><div class="card"><h2>Acerca del MVP</h2><p class="sm">Done? v0.9 · Tareas, subtareas, progreso, horario semanal, detección de bloques libres y recomendaciones locales. Sin autenticación en la nube ni conexión a IA externa.</p></div>`}
+function renderChat(){return `${header('💬 Chat Done?','<button class="topbtn" data-action="new-task">+ Tarea</button>')}<div class="chatmessages" id="chatMessages">${data.chat.map(m=>`<div class="bubble ${m.role==='me'?'mine':'bot'}">${escapeHtml(m.text)}</div>`).join('')}</div><div class="composer"><textarea id="chatInput" rows="1" placeholder="Ej: El viernes entrego Taller, necesito 8 horas..."></textarea><button data-action="send-chat" aria-label="Enviar mensaje">➤</button></div><div class="subtle" style="padding:6px">Interpretación con Gemini v2 · los cambios se guardan en este navegador.</div>`}
+function renderSettings(){return `${header('⚙ Ajustes')}<div class="card"><h2>Mi espacio</h2><label class="formfield">Nombre<input id="settingName" value="${escapeHtml(data.name)}" maxlength="40" placeholder="Tu nombre"></label><button class="button" data-action="save-name">Guardar nombre</button><p class="muted sm">Los datos se guardan en este navegador. Al usar el chat con IA, se envían el mensaje y las tareas y clases necesarias para interpretarlo.</p></div><div class="card"><h2>Mis datos</h2><div class="column"><button class="button secondary" data-action="export">⬇ Exportar respaldo JSON</button><label class="button secondary" style="text-align:center;cursor:pointer">⬆ Importar respaldo<input id="importFile" type="file" accept=".json,application/json" hidden></label><button class="button ghost" data-action="reset">Restablecer todo</button></div><p class="muted sm">Para mover tus tareas a otro dispositivo, exporta un respaldo e impórtalo allí.</p></div><div class="card"><h2>Acerca del MVP</h2><p class="sm">Done? v2 experimental · Gemini, tareas, progreso y horario semanal. Sin autenticación ni sincronización entre dispositivos.</p></div>`}
 function render(){const el=$('#main');$('#app').classList.toggle('chatbg',view==='chat');el.innerHTML=({home:renderHome,tasks:renderTasks,calendar:renderCalendar,chat:renderChat,settings:renderSettings})[view]();$$('#bottomNav button').forEach(b=>{b.classList.toggle('active',b.dataset.view===view);b.setAttribute('aria-current',b.dataset.view===view?'page':'false')});if(view==='chat'){let chat=$('#chatMessages');chat.scrollTop=chat.scrollHeight}$('#login').hidden=data.onboarded}
 function go(v){view=v;render();$('#main').scrollTop=0}
 function openDialog(html){$('#dialog').innerHTML=html;$('#modal').classList.add('open')}
@@ -179,35 +179,127 @@ function batchDialog(items){
  <p class="sm muted">${!t.dateFound?'Fecha no indicada: revisa la sugerencia. ':''}${!t.hoursFound?'Duración no indicada: revisa la estimación.':''}</p></article>`).join('');
  openDialog(`<h2>Organización propuesta</h2><p class="sm muted">Puedes corregir cada tarea antes de guardarlas juntas. Se ordenarán según vencimiento, horas y avance.</p>${proposals}<p id="batchError" role="alert" style="color:#aa354c"></p><div class="dialogactions"><button class="button secondary" type="button" data-action="close">Cancelar</button><button class="button" type="button" data-action="save-batch">Guardar todas</button></div>`);
 }
-function sendChat(){
- const input=$('#chatInput'),txt=input?.value.trim();
- if(!txt)return;
- const userMessage={role:'me',text:txt.slice(0,1400)};
- const low=plain(txt);
- let reply='',changes=[];
- if(/^(hola|gracias|hey|buenas)[!., ]*$/.test(low)){
-  reply='Escribe tus entregas con fecha, duración y subtareas. Las guardaré automáticamente en tu lista.';
- }else if(/(?:que|cual)\s+(?:hago|priorizo)|recomien|mis prioridades|tiempo libre/.test(low)){
-  let r=suggestion();
-  reply=r?`Primero: ${r.task.title} (${formatDate(r.task.due)}, ${r.task.hours} h, ${pct(r.task)}% completado). ${r.slot?`Bloque disponible: ${fmtTime(r.slot[0])}–${fmtTime(r.slot[1])}. Puedes avanzar ${formatMinutes(r.minutes)}.`:'No encuentro 30 minutos libres hoy en tu horario.'}`:'No tienes pendientes. Escribe tus próximas entregas para organizarlas.';
- }else{
-  const proposals=extractProposals(txt).sort((a,b)=>score(b)-score(a));
-  changes=proposals.filter(t=>t.title&&t.title.length>=3&&/^\d{4}-\d{2}-\d{2}$/.test(t.due)&&Number.isFinite(t.hours)).map(t=>({
-   id:makeId(),title:t.title,subject:t.subject||'',due:t.due,hours:t.hours,priority:t.priority,subs:t.subs
-  }));
-  if(!changes.length){
-   reply='No pude identificar una tarea concreta. Escribe por ejemplo: «El viernes entrego Taller, necesito 8 horas y me faltan renders y lámina». No se guardó ninguna tarea.';
+
+const DONE_API_V2='https://done-api.totoayudante07.workers.dev/interpret-v2';
+let sendingToDone=false;
+const doneNorm=x=>plain(String(x||'')).trim().replace(/\s+/g,' ');
+const doneDate=x=>typeof x==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(x)&&!isNaN(Date.parse(x))&&new Date(x+'T12:00:00Z').toISOString().slice(0,10)===x;
+const doneTime=x=>typeof x==='string'&&/^([01]\d|2[0-3]):[0-5]\d$/.test(x);
+const doneDay=x=>fullWeekday.findIndex(d=>doneNorm(d)===doneNorm(x));
+function doneContext(){
+ return {tasks:data.tasks.map(t=>({id:t.id,title:t.title,subject:t.subject,due:t.due,hours:t.hours,subs:t.subs.map(q=>({id:q.id,title:q.title,done:q.done}))})),
+ classes:data.events.map(e=>({id:e.id,title:e.title,day:fullWeekday[e.dow],date:e.date,start:e.start,end:e.end,recurring:e.kind==='weekly'}))};
+}
+function doneApply(result,message){
+ if(result?.ok!==true||result.version!==2||!Array.isArray(result.proposals))throw Error('Respuesta inválida de Gemini.');
+ if(result.needs_clarification)return {reply:result.clarification||'Necesito aclarar qué registro deseas modificar.'};
+ if(!result.proposals.length)return {reply:'No identifiqué una operación concreta. Indica la tarea o clase y lo que quieres hacer.'};
+ if(result.proposals.length>15)throw Error('Demasiadas operaciones.');
+ const next={...data,tasks:data.tasks.map(t=>({...t,subs:t.subs.map(x=>({...x}))})),events:data.events.map(e=>({...e}))};
+ const updates=[],seen=new Set(),normal=doneNorm(message);
+ const weekly=/\b(todos?|todas?|cada|semanal|semanales|semana|siempre|repetir|repite|recurrente)\b/.test(normal);
+ const once=/\b(puntual|solo este|solo esta|una sola vez|no se repite|deja de repetirse)\b/.test(normal);
+ for(const op of result.proposals){
+  if(!op||!['create','update','complete','delete'].includes(op.action)||!['task','class'].includes(op.entity))throw Error('Operación desconocida.');
+  const {action,entity}=op,id=String(op.target_id||'');
+  const key=entity+':'+(action==='create'?'new:'+op.title+':'+op.due+':'+op.day:id);
+  if(seen.has(key))throw Error('Gemini propuso un cambio duplicado.');
+  seen.add(key);
+  const collection=entity==='task'?next.tasks:next.events;
+  const old=collection.find(x=>x.id===id);
+  if(action!=='create'&&(!id||!old))throw Error('No encuentro el registro original. No se guardó nada.');
+  if(action==='complete'){
+   if(entity!=='task')throw Error('Solo se pueden completar tareas.');
+   if(!old.subs.length)old.subs.push({id:makeId(),title:'Tarea completada',done:true});
+   old.subs.forEach(x=>x.done=true);
+   updates.push('Completé '+old.title);continue;
+  }
+  if(action==='delete'){
+   if(!confirm('¿Eliminar '+old.title+'?'))return {reply:'Eliminación cancelada. No se guardaron cambios.'};
+   if(entity==='task')next.tasks=next.tasks.filter(t=>t.id!==id);
+   else next.events=next.events.filter(e=>e.id!==id);
+   updates.push('Eliminé '+old.title);continue;
+  }
+  if(entity==='task'){
+   if(action==='create'){
+    const title=String(op.title||'').trim().slice(0,120),subject=String(op.subject||'').trim().slice(0,80),due=String(op.due||''),hours=Number(op.estimated_hours);
+    if(!title||!doneDate(due)||!Number.isFinite(hours)||hours<.5||hours>1000)throw Error('Para crear la tarea necesito título, fecha y horas. No guardé nada.');
+    if(next.tasks.some(t=>doneNorm(t.title)===doneNorm(title)&&doneNorm(t.subject)===doneNorm(subject)&&t.due===due)){updates.push('Ya existía '+title);continue}
+    next.tasks.push({id:makeId(),title,subject,due,hours,priority:2,subs:(Array.isArray(op.subtasks)?op.subtasks:[]).filter(x=>typeof x==='string'&&x.trim()).slice(0,30).map(x=>({id:makeId(),title:x.trim().slice(0,120),done:false}))});
+    updates.push('Creé '+title);
+   }else{
+    if(op.title)old.title=String(op.title).slice(0,120);
+    if(op.subject)old.subject=String(op.subject).slice(0,80);
+    if(op.due){if(!doneDate(op.due))throw Error('Fecha inválida.');old.due=op.due}
+    const h=Number(op.estimated_hours);
+    if(Number.isFinite(h)&&h>0)old.hours=Math.max(.5,Math.min(1000,h));
+    if(/\b(agrega|agregar|anade|anadir|incluye|incluir)\b/.test(normal)){
+     for(const st of (Array.isArray(op.subtasks)?op.subtasks:[])){
+      const title=String(st||'').trim().slice(0,120);
+      if(title&&!old.subs.some(q=>doneNorm(q.title)===doneNorm(title)))old.subs.push({id:makeId(),title,done:false});
+     }
+    }
+    updates.push('Actualicé '+old.title);
+   }
   }else{
-   const caveats=proposals.some(t=>!t.dateFound||!t.hoursFound)?' Cuando faltó fecha u horas, apliqué valores provisionales: puedes corregirlos en Tareas.':'';
-   reply=`✓ Guardé automáticamente ${changes.length} ${changes.length===1?'tarea':'tareas'} y organicé tus prioridades:\n${changes.map((t,i)=>`${i+1}. ${t.title} — ${priorityLine(t)}`).join('\n')}\n\nYa aparecen en Tareas. Puedes editarlas desde allí.${caveats}`;
+   const title=String(op.title||op.subject||'').trim().slice(0,120);
+   const day=doneDay(op.day),start=String(op.start||''),end=String(op.end||'');
+   if(action==='create'){
+    if(!title||day<0||!doneTime(start)||!doneTime(end)||start>=end)throw Error('Necesito día y horario válidos para crear esa clase.');
+    const kind=(op.recurring===true||weekly&&!once)?'weekly':'once',date=String(op.date||'');
+    if(kind==='once'&&(!doneDate(date)||parseDate(date).getDay()!==day))throw Error('Necesito la fecha exacta de la clase puntual.');
+    if(next.events.some(e=>doneNorm(e.title)===doneNorm(title)&&e.kind===kind&&(kind==='weekly'?e.dow===day:e.date===date)&&e.start===start&&e.end===end)){updates.push('La clase '+title+' ya existía');continue}
+    next.events.push({id:makeId(),title,kind,dow:day,date:kind==='once'?date:today(),start,end});
+    updates.push('Creé '+title);
+   }else{
+    if(title)old.title=title;
+    if(day>=0)old.dow=day;
+    if(start)old.start=start;
+    if(end)old.end=end;
+    if(!doneTime(old.start)||!doneTime(old.end)||old.start>=old.end)throw Error('El nuevo horario es inválido.');
+    if(once)old.kind='once';
+    else if(weekly||op.recurring===true)old.kind='weekly';
+    if(old.kind==='once'){
+     const date=String(op.date||old.date||'');
+     if(!doneDate(date)||parseDate(date).getDay()!==old.dow)throw Error('La clase puntual necesita fecha que coincida con el día.');
+     old.date=date;
+    }
+    updates.push('Actualicé '+old.title);
+   }
   }
  }
- const newChat=[...data.chat,userMessage,{role:'bot',text:reply}].slice(-70);
- const next={...data,tasks:[...data.tasks,...changes],chat:newChat};
- if(!commit(next))return;
- pendingChat=null;
+ return {next,reply:updates.join('\n')};
+}
+async function sendChat(){
+ const input=$('#chatInput'),txt=input?.value.trim();
+ if(!txt||sendingToDone)return;
+ sendingToDone=true;
+ const msg=txt.slice(0,1400);
+ if(!commit({...data,chat:[...data.chat,{role:'me',text:msg}].slice(-70)})){sendingToDone=false;return}
  render();
- toast(changes.length?`✓ ${changes.length} ${changes.length===1?'tarea guardada':'tareas guardadas'} automáticamente`:'Mensaje recibido');
+ toast('Interpretando con Done?...');
+ let reply='';
+ try{
+  const low=plain(msg);
+  if(/^(hola|gracias|hey|buenas)[!., ]*$/.test(low))reply='¡Hola! 💜 Puedes pedirme crear, modificar, completar o eliminar tareas y clases.';
+  else if(/(?:que|cual)\s+(?:hago|priorizo)|recomien|mis prioridades|tiempo libre/.test(low)){
+   const x=suggestion();
+   reply=x?'Prioriza '+x.task.title+' ('+formatDate(x.task.due)+').':'No tienes tareas pendientes.';
+  }else{
+   const res=await fetch(DONE_API_V2,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,context:doneContext()})});
+   const payload=await res.json().catch(()=>null);
+   if(!res.ok||!payload?.ok)throw Error('Gemini no pudo interpretar el mensaje ('+(payload?.error||res.status)+'). No se guardaron operaciones.');
+   const output=doneApply(payload,msg);
+   reply=output.reply;
+   if(output.next){
+    if(!commit({...output.next,chat:[...data.chat,{role:'bot',text:reply}].slice(-70)})){sendingToDone=false;return}
+    sendingToDone=false;render();toast('✓ Cambios guardados');return;
+   }
+  }
+ }catch(e){console.error('Done? v2',e);reply=e.message||'Ocurrió un error. No se guardaron operaciones.'}
+ commit({...data,chat:[...data.chat,{role:'bot',text:reply}].slice(-70)});
+ sendingToDone=false;
+ render();
 }
 
 function saveBatch(){
