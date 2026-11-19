@@ -224,7 +224,7 @@ function doneApply(result,message){
    if(action==='create'){
     const title=String(op.title||'').trim().slice(0,120),subject=String(op.subject||'').trim().slice(0,80),due=String(op.due||''),hours=Number(op.estimated_hours);
     if(!title||!doneDate(due)||!Number.isFinite(hours)||hours<.5||hours>1000)throw Error('Para crear la tarea necesito título, fecha y horas. No guardé nada.');
-    if(next.tasks.some(t=>doneNorm(t.title)===doneNorm(title)&&doneNorm(t.subject)===doneNorm(subject)&&t.due===due)){updates.push('Ya existía '+title);continue}
+    if(next.tasks.some(t=>doneNorm(t.title)===doneNorm(title)&&doneNorm(t.subject)===doneNorm(subject))){throw Error('Ya existe una tarea llamada '+title+'. No creé un duplicado. Si querías modificarla, escribe explícitamente «edita la tarea existente» y vuelve a intentarlo.')}
     next.tasks.push({id:makeId(),title,subject,due,hours,priority:2,subs:(Array.isArray(op.subtasks)?op.subtasks:[]).filter(x=>typeof x==='string'&&x.trim()).slice(0,30).map(x=>({id:makeId(),title:x.trim().slice(0,120),done:false}))});
     updates.push('Creé '+title);
    }else{
